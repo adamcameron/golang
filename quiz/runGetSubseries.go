@@ -1,10 +1,11 @@
-// getSubseries.go
+// runGetSubseries.go
 
 package main
 
 import (
 	"flag"
 	"fmt"
+	"github.com/daccfml/golang/quiz/subseries"
 	"strconv"
 	"strings"
 )
@@ -22,26 +23,7 @@ func main() {
 	flag.Parse()
 	series := convertSeriesToArray(seriesAsString)
 
-	subseries := series[0:0]
-	low := 0
-
-	for index, _ := range series {
-		high := index + 1
-		working := series[low:high]
-
-		for sumSlice(&working) > threshold {
-			low++
-			working = series[low:high]
-		}
-		sum := sumSlice(&working)
-
-		workingIsBetterForLength := len(working) > len(subseries)
-		workingIsBetterForTotal := len(working) == len(subseries) && sum <= threshold
-
-		if workingIsBetterForLength || workingIsBetterForTotal {
-			subseries = working
-		}
-	}
+	subseries := subseries.Get(series, threshold)
 
 	fmt.Println(subseries)
 }
@@ -52,13 +34,6 @@ func convertSeriesToArray(seriesAsString string) (seriesAsIntegers []int) {
 		if e == nil {
 			seriesAsIntegers = append(seriesAsIntegers, integerElement)
 		}
-	}
-	return
-}
-
-func sumSlice(slice *[]int) (sum int) {
-	for _, value := range *slice {
-		sum += value
 	}
 	return
 }
