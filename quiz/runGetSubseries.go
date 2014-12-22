@@ -20,7 +20,6 @@ func init() {
 }
 
 func main() {
-	flag.Parse()
 	series := convertSeriesToArray(seriesAsString)
 
 	subseries := subseries.Get(series, threshold)
